@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Monitor, Users, Lightbulb, Rocket } from "lucide-react";
@@ -9,7 +8,7 @@ const AboutSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What We're About</h2>
-          <div className="mt-2 h-1 w-20 bg-gradient-to-r from-hawaii-blue to-hawaii-teal rounded-full mx-auto"></div>
+          <div className="mt-2 h-1 w-20 bg-hawaii-blue rounded-full mx-auto"></div>
         </div>
 
         <div className="prose prose-lg max-w-3xl mx-auto text-gray-600">

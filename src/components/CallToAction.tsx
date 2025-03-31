@@ -5,7 +5,7 @@ import { Users } from "lucide-react";
 
 const CallToAction = () => {
   return (
-    <section id="join" className="py-16 bg-gradient-to-r from-hawaii-blue to-hawaii-teal">
+    <section id="join" className="py-16 bg-hawaii-blue">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">Ready to Join Our Community?</h2>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -11,8 +10,8 @@ const Navigation = () => {
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <Monitor className="h-6 w-6 text-hawaii-teal" />
-              <span className="text-xl font-bold bg-gradient-to-r from-hawaii-blue to-hawaii-teal bg-clip-text text-transparent">
+              <Monitor className="h-6 w-6 text-hawaii-blue" />
+              <span className="text-xl font-bold text-hawaii-blue">
                 Big Island Tech
               </span>
             </Link>
@@ -36,7 +35,7 @@ const Navigation = () => {
                 Join Us
               </a>
             </Button>
-            <Button className="bg-gradient-to-r from-hawaii-blue to-hawaii-teal hover:opacity-90 text-white ml-2" asChild>
+            <Button className="bg-hawaii-blue hover:bg-hawaii-blue/90 text-white ml-2" asChild>
               <a href="https://www.meetup.com/big-island-tech/" target="_blank" rel="noopener noreferrer">
                 Visit Meetup
               </a>

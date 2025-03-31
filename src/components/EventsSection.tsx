@@ -82,7 +82,7 @@ const EventCard = ({ event }: { event: typeof upcomingEvents[0] }) => {
         <p className="text-gray-600 line-clamp-3">{event.description}</p>
       </CardContent>
       <CardFooter className="px-4 pb-4 pt-0">
-        <Button className="w-full bg-hawaii-teal hover:bg-hawaii-teal/90 text-white" asChild>
+        <Button className="w-full bg-hawaii-blue hover:bg-hawaii-blue/90 text-white" asChild>
           <a href={event.link} target="_blank" rel="noopener noreferrer">
             View Details
             <ExternalLink className="ml-1 h-4 w-4" />
@@ -99,7 +99,7 @@ const EventsSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Events</h2>
-          <div className="mt-2 h-1 w-20 bg-gradient-to-r from-hawaii-blue to-hawaii-teal rounded-full mx-auto"></div>
+          <div className="mt-2 h-1 w-20 bg-hawaii-blue rounded-full mx-auto"></div>
           <p className="mt-4 text-lg text-gray-600">
             Join us for exciting events and connect with the Big Island tech community.
           </p>

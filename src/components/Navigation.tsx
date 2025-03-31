@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, Info, PalmTree } from "lucide-react";
+import { Calendar, Users, Info, Palmtree } from "lucide-react";
 
 const Navigation = () => {
   return (
@@ -11,7 +11,7 @@ const Navigation = () => {
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <PalmTree className="h-6 w-6 text-hawaii-blue" />
+              <Palmtree className="h-6 w-6 text-hawaii-blue" />
               <span className="text-xl font-bold text-hawaii-blue">
                 Big Island Tech
               </span>

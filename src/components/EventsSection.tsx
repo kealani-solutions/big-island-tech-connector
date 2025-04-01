@@ -1,59 +1,17 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, MapPin, Clock, ExternalLink } from "lucide-react";
+import { Event, upcomingEvents, pastEvents } from "@/data/events";
 
-// Sample events data - in a real application, this would come from an API
-const upcomingEvents = [
-  {
-    id: 1,
-    title: "AI and Machine Learning Workshop",
-    date: "November 15, 2023",
-    time: "6:00 PM - 8:00 PM",
-    location: "Hawaii Innovation Hub, Hilo",
-    description: "Join us for a hands-on workshop where we'll explore the basics of AI and machine learning, and how these technologies can be applied to solve real-world problems.",
-    imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=300&h=200",
-    link: "https://www.meetup.com/big-island-tech/",
-  },
-  {
-    id: 2,
-    title: "Renewable Energy Solutions",
-    date: "December 5, 2023",
-    time: "5:30 PM - 7:30 PM",
-    location: "Kona Community Center",
-    description: "Discover how innovative renewable energy technologies are being implemented on the Big Island and the impact they're having on our community and environment.",
-    imageUrl: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&q=80&w=300&h=200",
-    link: "https://www.meetup.com/big-island-tech/",
-  },
-];
+interface EventCardProps {
+  event: Event;
+  key?: number;
+}
 
-const pastEvents = [
-  {
-    id: 3,
-    title: "Tech Networking Night",
-    date: "October 20, 2023",
-    time: "6:00 PM - 9:00 PM",
-    location: "Coconut Island Tech Hub, Hilo",
-    description: "A casual evening of networking, idea-sharing, and community building among Big Island's tech enthusiasts and entrepreneurs.",
-    imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=300&h=200",
-    link: "https://www.meetup.com/big-island-tech/",
-  },
-  {
-    id: 4,
-    title: "Web Development Workshop",
-    date: "September 12, 2023",
-    time: "5:00 PM - 7:00 PM",
-    location: "Pahoa Community Center",
-    description: "Learn the fundamentals of modern web development and how to create responsive and accessible websites.",
-    imageUrl: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&q=80&w=300&h=200",
-    link: "https://www.meetup.com/big-island-tech/",
-  },
-];
-
-const EventCard = ({ event }: { event: typeof upcomingEvents[0] }) => {
+const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
     <Card className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-shadow">
       <div className="h-40 overflow-hidden">
@@ -93,7 +51,7 @@ const EventCard = ({ event }: { event: typeof upcomingEvents[0] }) => {
   );
 };
 
-const EventsSection = () => {
+const EventsSection: React.FC = () => {
   return (
     <section id="events" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

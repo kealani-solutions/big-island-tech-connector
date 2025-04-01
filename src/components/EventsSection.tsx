@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -14,7 +15,7 @@ interface EventCardProps {
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
     <Card className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="h-40 overflow-hidden">
+      <div className="h-48 overflow-hidden">
         <img 
           src={event.imageUrl} 
           alt={event.title} 
@@ -25,19 +26,23 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         <h3 className="font-bold text-xl">{event.title}</h3>
       </CardHeader>
       <CardContent className="px-4 py-2 flex-grow">
-        <div className="flex items-start space-x-2 text-gray-600 mb-2">
-          <Calendar className="h-4 w-4 mt-0.5 flex-shrink-0" />
-          <span>{event.date}</span>
+        <div className="flex flex-col space-y-2 mb-3">
+          <div className="flex items-start space-x-2 text-gray-600 text-sm">
+            <Calendar className="h-4 w-4 mt-0.5 flex-shrink-0" />
+            <span>{event.date}</span>
+          </div>
+          <div className="flex items-start space-x-2 text-gray-600 text-sm">
+            <Clock className="h-4 w-4 mt-0.5 flex-shrink-0" />
+            <span>{event.time}</span>
+          </div>
+          <div className="flex items-start space-x-2 text-gray-600 text-sm">
+            <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
+            <span>{event.location}</span>
+          </div>
         </div>
-        <div className="flex items-start space-x-2 text-gray-600 mb-2">
-          <Clock className="h-4 w-4 mt-0.5 flex-shrink-0" />
-          <span>{event.time}</span>
+        <div className="mt-2">
+          <p className="text-gray-700 line-clamp-6 text-sm leading-relaxed">{event.description}</p>
         </div>
-        <div className="flex items-start space-x-2 text-gray-600 mb-4">
-          <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-          <span>{event.location}</span>
-        </div>
-        <p className="text-gray-600 line-clamp-3">{event.description}</p>
       </CardContent>
       <CardFooter className="px-4 pb-4 pt-0">
         <Button className="w-full bg-hawaii-blue hover:bg-hawaii-blue/90 text-white" asChild>

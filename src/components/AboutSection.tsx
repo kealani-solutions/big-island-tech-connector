@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Monitor, Users, Lightbulb, Rocket } from "lucide-react";
@@ -22,10 +23,12 @@ const AboutSection = () => {
           </p>
         </div>
 
-        <h3 className="text-2xl font-bold text-center text-gray-900 mt-12 mb-8">Why join?</h3>
-        <p className="text-gray-600 mb-8 max-w-3xl">
-          This group is a hub for collaboration, inspiration, and growth. By joining, you'll have the opportunity to:
-        </p>
+        <div className="prose prose-lg max-w-3xl mx-auto">
+          <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-5">Why join?</h3>
+          <p className="text-gray-600 mb-8">
+            This group is a hub for collaboration, inspiration, and growth. By joining, you'll have the opportunity to:
+          </p>
+        </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
           <Card className="border border-gray-200 hover:shadow-md transition-shadow animate-slide-up">

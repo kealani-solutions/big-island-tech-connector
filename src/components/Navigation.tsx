@@ -14,7 +14,7 @@ const Navigation = () => {
               <img 
                 src="/lovable-uploads/a5384ac3-73bc-4a39-b48e-9e54b5afab7b.png" 
                 alt="Big Island Tech logo" 
-                className="w-[90px] h-[38px] object-contain" 
+                className="w-[70px] h-[30px] object-contain" 
               />
               <span className="text-xl font-bold text-hawaii-blue">
                 Big Island Tech

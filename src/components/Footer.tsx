@@ -21,11 +21,8 @@ const Footer = () => {
             <a href="#events" className="text-gray-400 hover:text-white transition-colors">
               Events
             </a>
-            <a href="#join" className="text-gray-400 hover:text-white transition-colors">
-              Join Us
-            </a>
             <a href="https://www.meetup.com/big-island-tech/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-              Meetup
+              Join Us on Meetup
             </a>
           </div>
         </div>

@@ -2,17 +2,27 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const Hero = () => {
   return (
     <div className="relative h-[70vh] min-h-[500px] overflow-hidden">
-      {/* Hero image */}
+      {/* Hero image with optimization */}
       <div className="absolute inset-0">
-        <img
-          src="/lovable-uploads/304411ce-3e6f-4334-b584-8b50cd4284c4.png"
-          alt="Big Island Tech future vision with mountain, renewable energy and technology"
-          className="w-full h-full object-cover"
-        />
+        <picture>
+          <source 
+            srcSet="/lovable-uploads/304411ce-3e6f-4334-b584-8b50cd4284c4.png"
+            type="image/png"
+          />
+          <img
+            src="/lovable-uploads/304411ce-3e6f-4334-b584-8b50cd4284c4.png"
+            alt="Big Island Tech future vision with mountain, renewable energy and technology"
+            className="w-full h-full object-cover"
+            loading="eager" 
+            decoding="async"
+            fetchPriority="high"
+          />
+        </picture>
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
 

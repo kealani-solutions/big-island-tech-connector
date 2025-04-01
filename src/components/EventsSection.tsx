@@ -14,7 +14,7 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
-    <Card className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-shadow">
+    <Card className="h-[110%] flex flex-col overflow-hidden hover:shadow-lg transition-shadow">
       <div className="h-48 overflow-hidden">
         <img 
           src={event.imageUrl} 
@@ -41,7 +41,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           </div>
         </div>
         <div className="mt-2">
-          <p className="text-gray-700 line-clamp-6 text-sm leading-relaxed">{event.description}</p>
+          <p className="text-gray-700 line-clamp-8 text-sm leading-relaxed">{event.description}</p>
         </div>
       </CardContent>
       <CardFooter className="px-4 pb-4 pt-0">

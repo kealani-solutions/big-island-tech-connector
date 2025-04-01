@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -10,9 +9,10 @@ import { Event, upcomingEvents, pastEvents } from "@/data/events";
 interface EventCardProps {
   event: Event;
   key?: number;
+  isUpcoming?: boolean;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ event }) => {
+const EventCard: React.FC<EventCardProps> = ({ event, isUpcoming }) => {
   return (
     <Card className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-shadow">
       <div className="h-48 overflow-hidden">
@@ -47,7 +47,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       <CardFooter className="px-4 pb-4 pt-0">
         <Button className="w-full bg-hawaii-blue hover:bg-hawaii-blue/90 text-white" asChild>
           <a href={event.link} target="_blank" rel="noopener noreferrer">
-            View Details
+            {isUpcoming ? 'View Details and RSVP' : 'View Details'}
             <ExternalLink className="ml-1 h-4 w-4" />
           </a>
         </Button>
@@ -80,7 +80,7 @@ const EventsSection: React.FC = () => {
             {upcomingEvents.length > 0 ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {upcomingEvents.map((event) => (
-                  <EventCard key={event.id} event={event} />
+                  <EventCard key={event.id} event={event} isUpcoming={true} />
                 ))}
               </div>
             ) : (
@@ -93,7 +93,7 @@ const EventsSection: React.FC = () => {
           <TabsContent value="past">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {pastEvents.map((event) => (
-                <EventCard key={event.id} event={event} />
+                <EventCard key={event.id} event={event} isUpcoming={false} />
               ))}
             </div>
           </TabsContent>

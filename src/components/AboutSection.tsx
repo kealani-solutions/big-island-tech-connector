@@ -23,7 +23,7 @@ const AboutSection = () => {
         </div>
 
         <h3 className="text-2xl font-bold text-center text-gray-900 mt-12 mb-8">Why join?</h3>
-        <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+        <p className="text-gray-600 mb-8 max-w-3xl">
           This group is a hub for collaboration, inspiration, and growth. By joining, you'll have the opportunity to:
         </p>
 
@@ -69,7 +69,7 @@ const AboutSection = () => {
           </Card>
         </div>
 
-        <div className="text-center mt-12">
+        <div className="mt-12">
           <p className="text-lg font-medium text-gray-900 italic">Together, we can create something extraordinary. Let's build a brighter future, one meeting at a time!</p>
         </div>
       </div>

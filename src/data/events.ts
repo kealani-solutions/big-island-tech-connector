@@ -11,7 +11,7 @@ export interface Event {
 
 export const upcomingEvents: Event[] = [
   {
-    id: 1,
+    id: 4,
     title: "Smarter AI: How RAG, Agents & Workflows Transform LLMs into Intelligent Systems",
     date: "April 10, 2025",
     time: "4:00 PM - 5:30 PM HST",
@@ -19,6 +19,46 @@ export const upcomingEvents: Event[] = [
     description: "This month we will be discussing AI and how emerging patterns of software development are unlocking far more powerful capabilities than simple text or image generation. RAG is a method for retrieving trusted information to help answer your question before passing to an LLM. An Agent is software that self determines which of it's functions to use based on the problem it's solving. And Workflows combine multiple agents and software tools to automate end-to-end processes. This is all possible now and it is the future of how we will learn, work, and get stuff done.\n\nJoin us for this highly informative session presented by Mathew Goldsborough, Founder and CEO at NimbleBrain.ai based right here in Waimea, HI. Mat's experience spans AI, defense, e-commerce, and agriculture. Mark your calendars and RSVP now to join us on April 10th.",
     imageUrl: "https://secure.meetupstatic.com/photos/event/1/1/2/8/600_525304392.webp?w=750",
     link: "https://www.meetup.com/big-island-tech/events/306159379/",
+  },
+  {
+    id: 5,
+    title: "Big Island Tech Meetup",
+    date: "May 8, 2025",
+    time: "4:00 PM - 5:30 PM HST",
+    location: "VIRTUAL",
+    description: "The May meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation..",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
+    link: "https://www.meetup.com/big-island-tech/events/307172733/",
+  },
+  {
+    id: 6,
+    title: "Big Island Tech Meetup",
+    date: "June 12, 2025",
+    time: "4:00 PM - 5:30 PM HST",
+    location: "VIRTUAL",
+    description: "The June meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation..",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
+    link: "https://www.meetup.com/big-island-tech/events/307172884/",
+  },
+  {
+    id: 7,
+    title: "Big Island Tech Meetup",
+    date: "July 10, 2025",
+    time: "4:00 PM - 5:30 PM HST",
+    location: "VIRTUAL",
+    description: "The July meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation..",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
+    link: "https://www.meetup.com/big-island-tech/events/307172887/",
+  },
+  {
+    id: 8,
+    title: "Big Island Tech Meetup",
+    date: "August 14, 2025",
+    time: "4:00 PM - 5:30 PM HST",
+    location: "VIRTUAL",
+    description: "The August meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation..",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
+    link: "https://www.meetup.com/big-island-tech/events/307172893/",
   },
 ];
 
@@ -34,7 +74,7 @@ export const pastEvents: Event[] = [
     link: "https://www.meetup.com/big-island-tech/events/306059209/",
   },
   {
-    id: 4,
+    id: 2,
     title: "Building Technology Roadmaps That Actually Work",
     date: "February 12, 2025",
     time: "4:00 PM - 5:30 PM HST",
@@ -44,7 +84,7 @@ export const pastEvents: Event[] = [
     link: "https://www.meetup.com/big-island-tech/events/305472520/",
   },
   {
-    id: 5,
+    id: 1,
     title: "A Practical Guide to Working with ChatGPT, Claude, and Gemini",
     date: "January 9, 2025",
     time: "4:00 PM - 5:30 PM HST",

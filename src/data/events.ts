@@ -11,16 +11,6 @@ export interface Event {
 
 export const upcomingEvents: Event[] = [
   {
-    id: 4,
-    title: "Smarter AI: How RAG, Agents & Workflows Transform LLMs into Intelligent Systems",
-    date: "April 10, 2025",
-    time: "4:00 PM - 5:30 PM HST",
-    location: "VIRTUAL",
-    description: "This month we will be discussing AI and how emerging patterns of software development are unlocking far more powerful capabilities than simple text or image generation. RAG is a method for retrieving trusted information to help answer your question before passing to an LLM. An Agent is software that self determines which of it's functions to use based on the problem it's solving. And Workflows combine multiple agents and software tools to automate end-to-end processes. This is all possible now and it is the future of how we will learn, work, and get stuff done.\n\nJoin us for this highly informative session presented by Mathew Goldsborough, Founder and CEO at NimbleBrain.ai based right here in Waimea, HI. Mat's experience spans AI, defense, e-commerce, and agriculture. Mark your calendars and RSVP now to join us on April 10th.",
-    imageUrl: "https://secure.meetupstatic.com/photos/event/1/1/2/8/600_525304392.webp?w=750",
-    link: "https://www.meetup.com/big-island-tech/events/306159379/",
-  },
-  {
     id: 5,
     title: "Big Island Tech Meetup - Vibe Coding",
     date: "May 8, 2025",
@@ -63,6 +53,16 @@ export const upcomingEvents: Event[] = [
 ];
 
 export const pastEvents: Event[] = [
+  {
+    id: 4,
+    title: "Smarter AI: How RAG, Agents & Workflows Transform LLMs into Intelligent Systems",
+    date: "April 10, 2025",
+    time: "4:00 PM - 5:30 PM HST",
+    location: "VIRTUAL",
+    description: "This month we will be discussing AI and how emerging patterns of software development are unlocking far more powerful capabilities than simple text or image generation. RAG is a method for retrieving trusted information to help answer your question before passing to an LLM. An Agent is software that self determines which of it's functions to use based on the problem it's solving. And Workflows combine multiple agents and software tools to automate end-to-end processes. This is all possible now and it is the future of how we will learn, work, and get stuff done.\n\nJoin us for this highly informative session presented by Mathew Goldsborough, Founder and CEO at NimbleBrain.ai based right here in Waimea, HI. Mat's experience spans AI, defense, e-commerce, and agriculture. Mark your calendars and RSVP now to join us on April 10th.",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/1/1/2/8/600_525304392.webp?w=750",
+    link: "https://www.meetup.com/big-island-tech/events/306159379/",
+  },
   {
     id: 3,
     title: "Partnering with AI to Create Great User Experiences (UX)",

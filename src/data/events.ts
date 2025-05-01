@@ -22,7 +22,7 @@ export const upcomingEvents: Event[] = [
   },
   {
     id: 5,
-    title: "Big Island Tech Meetup",
+    title: "Big Island Tech Meetup - Vibe Coding",
     date: "May 8, 2025",
     time: "4:00 PM - 5:30 PM HST",
     location: "VIRTUAL",

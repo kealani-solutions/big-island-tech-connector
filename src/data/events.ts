@@ -11,22 +11,12 @@ export interface Event {
 
 export const upcomingEvents: Event[] = [
   {
-    id: 5,
-    title: "Big Island Tech Meetup - Vibe Coding",
-    date: "May 8, 2025",
-    time: "4:00 PM - 5:30 PM HST",
-    location: "VIRTUAL",
-    description: "The May meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation..",
-    imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
-    link: "https://www.meetup.com/big-island-tech/events/307172733/",
-  },
-  {
     id: 6,
-    title: "Big Island Tech Meetup",
+    title: "Big Island Tech Meetup - Low-Code AI Workflows",
     date: "June 12, 2025",
     time: "4:00 PM - 5:30 PM HST",
     location: "VIRTUAL",
-    description: "The June meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation..",
+    description: "The June meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation.",
     imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
     link: "https://www.meetup.com/big-island-tech/events/307172884/",
   },
@@ -36,7 +26,7 @@ export const upcomingEvents: Event[] = [
     date: "July 10, 2025",
     time: "4:00 PM - 5:30 PM HST",
     location: "VIRTUAL",
-    description: "The July meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation..",
+    description: "The July meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation.",
     imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
     link: "https://www.meetup.com/big-island-tech/events/307172887/",
   },
@@ -46,13 +36,23 @@ export const upcomingEvents: Event[] = [
     date: "August 14, 2025",
     time: "4:00 PM - 5:30 PM HST",
     location: "VIRTUAL",
-    description: "The August meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation..",
+    description: "The August meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation.",
     imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
     link: "https://www.meetup.com/big-island-tech/events/307172893/",
   },
 ];
 
 export const pastEvents: Event[] = [
+  {
+    id: 5,
+    title: "Big Island Tech Meetup - Vibe Coding",
+    date: "May 8, 2025",
+    time: "4:00 PM - 5:30 PM HST",
+    location: "VIRTUAL",
+    description: "The May meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation.",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
+    link: "https://www.meetup.com/big-island-tech/events/307172733/",
+  },
   {
     id: 4,
     title: "Smarter AI: How RAG, Agents & Workflows Transform LLMs into Intelligent Systems",

@@ -11,6 +11,39 @@ export interface Event {
 
 export const upcomingEvents: Event[] = [
   {
+    id: 9,
+    title: "Big Island Tech Meetup",
+    date: "September 11, 2025",
+    time: "4:00 PM - 5:30 PM HST",
+    location: "VIRTUAL",
+    description: "The September meetup will be virtual only.\n\nBig Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation.",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/1/6/a/6/600_528965798.webp?w=750",
+    link: "https://www.meetup.com/big-island-tech/events/308986999/",
+  },
+  {
+    id: 8,
+    title: "Big Island Tech Meetup at NELHA (Aquaculture field trip!)",
+    date: "August 14, 2025",
+    time: "4:00 PM - 5:30 PM HST",
+    location: "NELHA Hale Iako",
+    description: "The August meetup will be IN PERSON at NELHA Hale Iako. We will get a tour and tech talk from the amazing team at Ocean Era. Join us IN PERSON on our first Big Island Tech field trip.",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/7/d/9/7/600_528332151.webp?w=750",
+    link: "https://www.meetup.com/big-island-tech/events/307172893/",
+  },
+];
+
+export const pastEvents: Event[] = [
+  {
+    id: 7,
+    title: "Big Island Tech Meetup - Canceled this month",
+    date: "July 10, 2025",
+    time: "4:00 PM - 5:30 PM HST",
+    location: "NELHA Hale Iako",
+    description: "Meetup is cancelled due to unforeseen circumstances. See you next month!",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
+    link: "https://www.meetup.com/big-island-tech/events/307172887/",
+  },
+  {
     id: 6,
     title: "Big Island Tech Meetup - Low-Code AI Workflows",
     date: "June 12, 2025",
@@ -20,29 +53,6 @@ export const upcomingEvents: Event[] = [
     imageUrl: "https://secure.meetupstatic.com/photos/event/7/d/f/2/600_528332242.webp?w=750",
     link: "https://www.meetup.com/big-island-tech/events/307172884/",
   },
-  {
-    id: 7,
-    title: "Big Island Tech Meetup at NELHA (Aquaculture field trip!)",
-    date: "July 10, 2025",
-    time: "4:00 PM - 5:30 PM HST",
-    location: "NELHA Hale Iako",
-    description: "Meetup is cancelled due to unforeseen circumstances. See you next month!",
-    imageUrl: "https://secure.meetupstatic.com/photos/event/5/7/0/e/600_527242286.webp?w=750",
-    link: "https://www.meetup.com/big-island-tech/events/307172887/",
-  },
-  {
-    id: 8,
-    title: "Big Island Tech Meetup at NELHA (Aquaculture field trip!)",
-    date: "August 14, 2025",
-    time: "4:00 PM - 5:30 PM HST",
-    location: "VIRTUAL",
-    description: "The August meetup will be IN PERSON at NELHA Hale Iako. We will get a tour and tech talk from the amazing team at Ocean Era. Join us IN PERSON on our first Big Island Tech field trip.",
-    imageUrl: "https://secure.meetupstatic.com/photos/event/7/d/9/7/600_528332151.webp?w=750",
-    link: "https://www.meetup.com/big-island-tech/events/307172893/",
-  },
-];
-
-export const pastEvents: Event[] = [
   {
     id: 5,
     title: "Big Island Tech Meetup - Vibe Coding",

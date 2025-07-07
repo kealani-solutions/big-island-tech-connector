@@ -35,7 +35,7 @@ export const upcomingEvents: Event[] = [
 export const pastEvents: Event[] = [
   {
     id: 7,
-    title: "Big Island Tech Meetup - Canceled this month",
+    title: "[RESCHEDULED]Big Island Tech Meetup - Canceled this month",
     date: "July 10, 2025",
     time: "4:00 PM - 5:30 PM HST",
     location: "NELHA Hale Iako",

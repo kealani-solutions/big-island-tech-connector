@@ -44,35 +44,18 @@ export const getPastEvents = (): Event[] => {
   });
 };
 
-// Helper function to create a new event (makes adding from Meetup easier)
-export const createEvent = (eventData: Omit<Event, 'id'>): Event => {
-  const maxId = allEvents.length > 0 ? Math.max(...allEvents.map(e => e.id)) : 0;
-  return {
-    id: maxId + 1,
-    ...eventData
-  };
-};
-
-// Helper function to move an event to past (useful for cancelled/completed events)
-export const markEventAsPast = (eventId: number): void => {
-  const event = allEvents.find(e => e.id === eventId);
-  if (event) {
-    event.status = 'past';
-  }
-};
-
 /**
  * SINGLE SOURCE OF TRUTH FOR ALL EVENTS
  * 
  * To add a new event from Meetup:
- * 1. Copy the event details from Meetup.com
- * 2. Add a new event object to this array
- * 3. Set dateISO to YYYY-MM-DD format for accurate sorting
+ * 1. Run: node scripts/event-manager.js template
+ * 2. Copy event details from Meetup.com into the template
+ * 3. Add the event object to the TOP of this array
  * 4. The system will automatically categorize as upcoming/past
  * 
- * To mark an event as cancelled or move to past:
- * 1. Set status: 'cancelled' or status: 'past'
- * 2. Or use the markEventAsPast(eventId) helper function
+ * To mark an event as cancelled:
+ * 1. Add status: 'cancelled' to the event object
+ * 2. The event will show in "Past Events" with a cancelled badge
  */
 export const allEvents: Event[] = [
   {

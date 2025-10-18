@@ -10,15 +10,15 @@ const Hero = () => {
       {/* Hero image with optimization */}
       <div className="absolute inset-0">
         <picture>
-          <source 
-            srcSet="/lovable-uploads/304411ce-3e6f-4334-b584-8b50cd4284c4.png"
+          <source
+            srcSet="/hero-background.png"
             type="image/png"
           />
           <img
-            src="/lovable-uploads/304411ce-3e6f-4334-b584-8b50cd4284c4.png"
+            src="/hero-background.png"
             alt="Big Island Tech future vision with mountain, renewable energy and technology"
             className="w-full h-full object-cover"
-            loading="eager" 
+            loading="eager"
             decoding="async"
             fetchPriority="high"
           />

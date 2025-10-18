@@ -1,33 +1,25 @@
-# Welcome to your Lovable project
+# Big Island Tech Connector
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/18a994fa-60f7-4fd5-9831-6a661ae569e1
+A community website for innovators, entrepreneurs, and technology enthusiasts on Hawaii's Big Island.
 
-## How can I edit this code?
+## Getting Started
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/18a994fa-60f7-4fd5-9831-6a661ae569e1) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Follow these steps:
+### Installation
+
+Follow these steps to set up the project locally:
 
 ```sh
 # Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
 
 # Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+cd big-island-tech-connector
 
 # Step 3: Install the necessary dependencies.
 npm i
@@ -36,38 +28,61 @@ npm i
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The development server will start on http://localhost:8080
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Available Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` - Start the development server
+- `npm run build` - Create a production build
+- `npm run build:dev` - Create a development mode build
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview the production build locally
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Event Management
 
-## What technologies are used for this project?
+To manage events on the website, use the event management CLI tool:
 
-This project is built with .
+```sh
+# Show available commands
+node scripts/event-manager.js help
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+# Interactive add with auto-generated dateISO (RECOMMENDED)
+node scripts/event-manager.js add
 
-## How can I deploy this project?
+# Get basic event template
+node scripts/event-manager.js template
 
-Simply open [Lovable](https://lovable.dev/projects/18a994fa-60f7-4fd5-9831-6a661ae569e1) and click on Share -> Publish.
+# List all events
+node scripts/event-manager.js list
+```
 
-## Can I connect a custom domain to my Lovable project?
+For detailed event management instructions, see [EVENTS_MANAGEMENT.md](./EVENTS_MANAGEMENT.md).
 
-Yes it is!
+## Technologies Used
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This project is built with:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- [Vite](https://vitejs.dev/) - Build tool
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- [React](https://react.dev/) - UI framework
+- [shadcn-ui](https://ui.shadcn.com/) - Component library
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+
+## Project Structure
+
+```
+src/
+├── components/     # Reusable UI components
+├── data/          # Event data and utilities
+├── hooks/         # Custom React hooks
+├── lib/           # Utility functions
+└── pages/         # Page components
+```
+
+## Contributing
+
+Feel free to contribute to this project by submitting issues or pull requests.
+
+## License
+
+This project is open source and available under the MIT License.

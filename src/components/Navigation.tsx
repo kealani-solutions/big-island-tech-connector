@@ -11,10 +11,10 @@ const Navigation = () => {
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <img 
-                src="/lovable-uploads/a5384ac3-73bc-4a39-b48e-9e54b5afab7b.png" 
-                alt="Big Island Tech logo" 
-                className="w-[70px] h-[30px] object-contain" 
+              <img
+                src="/logo-icon.png"
+                alt="Big Island Tech logo"
+                className="w-[70px] h-[30px] object-contain"
               />
               <span className="text-xl font-bold text-hawaii-blue">
                 Big Island Tech

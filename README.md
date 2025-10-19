@@ -181,6 +181,71 @@ This ensures reliable event extraction while minimizing resource usage.
 - **Missing events**: Kept in database (may be past or cancelled)
 - **Manual events**: Preserved and never modified by sync
 
+## 🤖 Automated Sync with GitHub Actions
+
+The project includes GitHub Actions workflows for automated event syncing:
+
+### Daily Automatic Sync
+
+Events are automatically synced daily at 8 AM Hawaii time. The workflow:
+- Fetches latest events from Meetup.com
+- Updates `src/data/events.ts` if changes are found
+- Commits changes directly to the main branch
+- Creates a sync report in the workflow summary
+
+### Manual Sync Trigger
+
+You can manually trigger a sync from the GitHub Actions tab:
+
+1. Go to the **Actions** tab in your repository
+2. Select **"Sync Meetup Events"** workflow
+3. Click **"Run workflow"**
+4. Choose options:
+   - **Dry Run**: Preview changes without committing
+   - **Force Update**: Update all events regardless of changes
+
+### Setup Instructions
+
+1. **Enable GitHub Actions** in your repository settings
+
+2. **Ensure proper permissions**:
+   - Go to Settings → Actions → General
+   - Under "Workflow permissions", select:
+     - ✅ Read and write permissions
+     - ✅ Allow GitHub Actions to create and approve pull requests
+
+3. **The workflows will automatically**:
+   - Run daily at 8 AM HST (6 PM UTC)
+   - Create issues if sync fails
+   - Generate detailed sync reports
+
+### Workflow Files
+
+- `.github/workflows/sync-events.yml` - Main sync workflow
+- `.github/workflows/sync-events-monitor.yml` - Error monitoring and notifications
+
+### Customizing the Schedule
+
+Edit the cron expression in `sync-events.yml`:
+
+```yaml
+schedule:
+  - cron: '0 18 * * *'  # Daily at 6 PM UTC (8 AM HST)
+```
+
+Common schedules:
+- `'0 */6 * * *'` - Every 6 hours
+- `'0 12 * * 1'` - Weekly on Mondays at noon UTC
+- `'0 0 * * *'` - Daily at midnight UTC
+
+### Monitoring Sync Health
+
+The monitor workflow automatically:
+- Creates GitHub issues when sync fails
+- Provides debugging steps in issue description
+- Prevents duplicate issues for the same day
+- Logs successful syncs for audit trail
+
 ## 💡 Tips & Best Practices
 
 1. **Use sync command** for regular updates from Meetup
@@ -207,6 +272,41 @@ This ensures reliable event extraction while minimizing resource usage.
 - Check `dateISO` format (should be YYYY-MM-DD)
 - Verify `status` field if manually set
 - Events automatically move to past after their date
+
+## 🚀 Deployment
+
+### Automatic Deployment
+
+The project includes a deployment workflow that automatically deploys after:
+- Events are synced from Meetup
+- Code is pushed to the main branch
+- Manual trigger from GitHub Actions
+
+### GitHub Pages Setup
+
+1. **Enable GitHub Pages**:
+   - Go to Settings → Pages
+   - Source: GitHub Actions
+   - The site will be available at: `https://[username].github.io/[repo-name]/`
+
+2. **The deployment workflow** will automatically:
+   - Build the site after each sync
+   - Deploy to GitHub Pages
+   - Provide deployment URL in workflow summary
+
+### Alternative Deployment Options
+
+The `deploy.yml` workflow supports multiple platforms:
+
+#### Netlify
+1. Add secrets: `NETLIFY_AUTH_TOKEN` and `NETLIFY_SITE_ID`
+2. Set `deploy-netlify` job `if: true` in workflow
+3. Set `deploy-github-pages` job `if: false`
+
+#### Vercel
+1. Add secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID`
+2. Set `deploy-vercel` job `if: true` in workflow
+3. Set `deploy-github-pages` job `if: false`
 
 ## 🤝 Contributing
 

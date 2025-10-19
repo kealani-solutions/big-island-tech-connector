@@ -16,9 +16,11 @@ npm run build:dev    # Development mode build
 npm run preview      # Preview production build locally
 npm run lint         # Run ESLint
 
-# Event Management (IMPORTANT - use this for all event operations)
+# Event Management (IMPORTANT - use sync for automatic updates from Meetup!)
 node scripts/event-manager.js help      # Show all available commands
-node scripts/event-manager.js add       # Interactive add with auto-generated dateISO (RECOMMENDED)
+node scripts/event-manager.js sync      # Sync events from Meetup.com (RECOMMENDED)
+node scripts/event-manager.js sync --dry-run  # Preview sync changes without saving
+node scripts/event-manager.js add       # Interactive manual add with auto-generated dateISO
 node scripts/event-manager.js template  # Get basic event template
 node scripts/event-manager.js list      # List all events
 node scripts/event-manager.js cancel <id> # Get instructions to cancel an event
@@ -68,7 +70,10 @@ App.tsx → Routes → Index.tsx → Section Components → data/events.ts
   description: string,     // Event description
   imageUrl: string,        // Meetup.com event image URL
   link: string,            // Meetup.com event link
-  status?: 'upcoming' | 'past' | 'cancelled'  // Optional manual override
+  status?: 'upcoming' | 'past' | 'cancelled',  // Optional manual override
+  meetupId?: string,       // Meetup event ID from URL (for sync tracking)
+  lastSyncedAt?: string,   // ISO timestamp of last sync
+  syncStatus?: 'synced' | 'manual' | 'modified'  // Track sync state
 }
 ```
 
@@ -99,7 +104,13 @@ App.tsx → Routes → Index.tsx → Section Components → data/events.ts
 
 ## Common Tasks
 
-### Adding a New Event
+### Syncing Events from Meetup (Recommended)
+1. Run `node scripts/event-manager.js sync --dry-run` to preview changes
+2. Run `node scripts/event-manager.js sync` to apply changes
+3. Test locally with `npm run dev`
+4. Commit the updated `src/data/events.ts` file
+
+### Adding a New Event Manually
 1. Run `node scripts/event-manager.js add` for interactive mode
 2. Enter event details (use natural date format like "January 15, 2025")
 3. Copy the generated JavaScript object (with auto-generated dateISO)
@@ -125,7 +136,8 @@ App.tsx → Routes → Index.tsx → Section Components → data/events.ts
 | `src/components/EventsSection.tsx` | Events display with tabs |
 | `src/pages/Index.tsx` | Main landing page layout |
 | `scripts/event-manager.js` | CLI tool for event management |
-| `EVENTS_MANAGEMENT.md` | Detailed event management guide |
+| `scripts/sync-events.js` | Automated Meetup.com sync script |
+| `README.md` | Complete documentation including event management |
 
 ## Development Tips
 
@@ -141,6 +153,8 @@ The site can be deployed to any static hosting service (Netlify, Vercel, GitHub 
 
 ## External Integration
 
-- All events link to Meetup.com
-- Images are hosted on Meetup's CDN
-- No API integration currently (all data is static)
+- **Meetup.com Sync**: Automated web scraping to sync events
+- **Event Tracking**: Each event linked by Meetup ID
+- **Images**: Hosted on Meetup's CDN
+- **Data Storage**: Static TypeScript file (no database)
+- **Sync Method**: Web scraping (Meetup API requires paid PRO account)

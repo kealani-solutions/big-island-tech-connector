@@ -2,11 +2,12 @@
 
 /**
  * Big Island Tech Event Manager
- * 
+ *
  * A simple command-line tool to help manage events for the website.
- * 
+ *
  * Usage:
- *   node scripts/event-manager.js add             # Add a new event
+ *   node scripts/event-manager.js sync            # Sync events from Meetup.com
+ *   node scripts/event-manager.js add             # Add a new event manually
  *   node scripts/event-manager.js list            # List all events
  *   node scripts/event-manager.js cancel <id>     # Mark event as cancelled
  *   node scripts/event-manager.js template        # Generate event template
@@ -16,6 +17,7 @@ import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
 import { fileURLToPath } from 'url';
+import { syncEvents } from './sync-events.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -232,16 +234,21 @@ function showHelp() {
   console.log('\n🏝️  Big Island Tech Event Manager');
   console.log('='.repeat(40));
   console.log('Commands:');
-  console.log('  add        Add a new event interactively');
+  console.log('  sync       Sync events from Meetup.com (RECOMMENDED)');
+  console.log('  add        Add a new event manually');
   console.log('  list       List all events');
   console.log('  cancel <id> Instructions to cancel an event');
   console.log('  template   Show event template for manual addition');
   console.log('  help       Show this help message');
+  console.log('\nSync Options:');
+  console.log('  sync --dry-run   Preview changes without saving');
+  console.log('  sync --verbose   Show detailed logs');
+  console.log('  sync --force     Force update all events');
   console.log('\nExamples:');
-  console.log('  node scripts/event-manager.js template');
+  console.log('  node scripts/event-manager.js sync');
+  console.log('  node scripts/event-manager.js sync --dry-run');
   console.log('  node scripts/event-manager.js add');
   console.log('  node scripts/event-manager.js list');
-  console.log('  node scripts/event-manager.js cancel 7');
 }
 
 async function main() {
@@ -249,6 +256,10 @@ async function main() {
   const arg = process.argv[3];
 
   switch (command) {
+    case 'sync':
+      // Pass along any additional arguments for --dry-run, --verbose, --force
+      await syncEvents();
+      break;
     case 'add':
       await addEvent();
       break;

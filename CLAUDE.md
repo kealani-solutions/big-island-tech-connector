@@ -40,6 +40,10 @@ node scripts/event-manager.js cancel <id> # Get instructions to cancel an event
 - `src/data/` - Contains `events.ts` with all event data and utility functions
 - `src/pages/` - Page-level components (Index, NotFound)
 - `scripts/` - CLI tools for event management
+- `.github/workflows/` - GitHub Actions for automated sync and deployment
+
+### Path Aliases
+- `@/*` resolves to `./src/*` (configured in vite.config.ts and tsconfig.json)
 
 ### Data Flow Pattern
 ```
@@ -141,11 +145,9 @@ App.tsx → Routes → Index.tsx → Section Components → data/events.ts
 
 ## Development Tips
 
-1. **Always use the event CLI tool** instead of manually editing events
-2. **Test locally** before committing changes
-3. **Use existing shadcn-ui components** before creating new ones
-4. **Follow the existing patterns** for consistency
-5. **Events added to TOP of array** maintain chronological order
+1. **Always use the event CLI tool** (`node scripts/event-manager.js`) instead of manually editing events
+2. **Use existing shadcn-ui components** before creating new ones
+3. **Events added to TOP of array** maintain chronological order
 
 ## Deployment
 
@@ -153,8 +155,14 @@ The site can be deployed to any static hosting service (Netlify, Vercel, GitHub 
 
 ## External Integration
 
-- **Meetup.com Sync**: Automated web scraping to sync events
+- **Meetup Source**: https://www.meetup.com/big-island-tech/events/
+- **Sync Method**: Web scraping with Puppeteer/Cheerio (Meetup API requires paid PRO account)
 - **Event Tracking**: Each event linked by Meetup ID
 - **Images**: Hosted on Meetup's CDN
 - **Data Storage**: Static TypeScript file (no database)
-- **Sync Method**: Web scraping (Meetup API requires paid PRO account)
+
+## CI/CD
+
+- **Automated Sync**: GitHub Actions runs daily at 8 AM HST to sync events from Meetup
+- **Auto-Deploy**: Configured for GitHub Pages deployment after sync
+- **Manual Trigger**: Can run sync from GitHub Actions tab with dry-run option

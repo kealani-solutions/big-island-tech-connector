@@ -111,7 +111,7 @@ export const allEvents: Event[] = [
   },
   {
     id: 14,
-    title: "Big Island Tech Meetup",
+    title: "Big Island Tech Meetup - Valerie L. Harmon - Nāmaka Algae Inc",
     date: "February 13, 2026",
     dateISO: "2026-02-13",
     time: "2:00 AM - 3:30 AM HST",
@@ -120,12 +120,12 @@ export const allEvents: Event[] = [
     imageUrl: "https://secure.meetupstatic.com/photos/event/d/6/9/7/highres_531714935.webp?w=3840",
     link: "https://www.meetup.com/big-island-tech/events/312372161/?eventOrigin=group_events_list",
     meetupId: "312372161",
-    lastSyncedAt: "2025-12-10T18:11:39.530Z",
+    lastSyncedAt: "2025-12-11T18:09:56.592Z",
     syncStatus: "synced",
   },
   {
     id: 13,
-    title: "Big Island Tech Meetup - Welcome to 2026",
+    title: "Big Island Tech Meetup - Dana McLaughlin - Hawaiʻi Keiki Museum",
     date: "January 9, 2026",
     dateISO: "2026-01-09",
     time: "2:00 AM - 3:30 AM HST",
@@ -134,7 +134,7 @@ export const allEvents: Event[] = [
     imageUrl: "https://secure.meetupstatic.com/photos/event/d/6/7/b/highres_531714907.webp?w=3840",
     link: "https://www.meetup.com/big-island-tech/events/312372137/?eventOrigin=group_events_list",
     meetupId: "312372137",
-    lastSyncedAt: "2025-12-10T18:11:39.530Z",
+    lastSyncedAt: "2025-12-11T18:09:56.592Z",
     syncStatus: "synced",
   },
   {

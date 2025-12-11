@@ -97,7 +97,7 @@ export const allEvents: Event[] = [
   },
   {
     id: 15,
-    title: "Big Island Tech Meetup",
+    title: "Big Island Tech Meetup - Benson Medina - Director of R&D, County of Hawaiʻi",
     date: "March 13, 2026",
     dateISO: "2026-03-13",
     time: "2:00 AM - 3:30 AM HST",
@@ -106,7 +106,7 @@ export const allEvents: Event[] = [
     imageUrl: "https://secure.meetupstatic.com/photos/event/d/6/9/f/highres_531714943.webp?w=3840",
     link: "https://www.meetup.com/big-island-tech/events/312372179/?eventOrigin=group_events_list",
     meetupId: "312372179",
-    lastSyncedAt: "2025-12-10T18:11:39.530Z",
+    lastSyncedAt: "2025-12-11T23:37:32.110Z",
     syncStatus: "synced",
   },
   {

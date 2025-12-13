@@ -17,8 +17,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import puppeteer from 'puppeteer';
-import * as cheerio from 'cheerio';
-import fetch from 'node-fetch';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,6 +24,7 @@ const __dirname = path.dirname(__filename);
 const EVENTS_FILE = path.join(__dirname, '../src/data/events.ts');
 const MEETUP_BASE_URL = 'https://www.meetup.com';
 const MEETUP_GROUP_URL = `${MEETUP_BASE_URL}/big-island-tech/events/`;
+const HAWAII_TIMEZONE = 'Pacific/Honolulu';
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -45,51 +44,10 @@ const log = {
 
 /**
  * Scrape the main events page to get list of upcoming events
- * First try with simple fetch, fallback to Puppeteer if needed
  */
 async function scrapeEventsList() {
   log.info('Fetching Meetup events list...');
 
-  // First try with simple fetch
-  try {
-    log.verbose(`Fetching ${MEETUP_GROUP_URL}`);
-    const response = await fetch(MEETUP_GROUP_URL, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
-      }
-    });
-
-    const html = await response.text();
-    const $ = cheerio.load(html);
-
-    // Look for event links
-    const eventUrls = new Set();
-    $('a[href*="/events/"]').each((i, elem) => {
-      const href = $(elem).attr('href');
-      if (href) {
-        // Convert relative URLs to absolute
-        const fullUrl = href.startsWith('http') ? href : `${MEETUP_BASE_URL}${href}`;
-        // Filter to only include event detail pages
-        if (fullUrl.match(/\/big-island-tech\/events\/\d+/)) {
-          eventUrls.add(fullUrl);
-        }
-      }
-    });
-
-    if (eventUrls.size > 0) {
-      log.success(`Found ${eventUrls.size} events on Meetup`);
-      log.verbose('Event URLs: ' + Array.from(eventUrls).join(', '));
-      return Array.from(eventUrls);
-    }
-
-    log.warning('No events found with simple fetch, trying Puppeteer...');
-  } catch (error) {
-    log.warning(`Simple fetch failed: ${error.message}, trying Puppeteer...`);
-  }
-
-  // Fallback to Puppeteer for dynamic content
   const browser = await puppeteer.launch({
     headless: 'new',
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
@@ -101,7 +59,7 @@ async function scrapeEventsList() {
     // Set a user agent to avoid detection
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
-    log.verbose(`Navigating to ${MEETUP_GROUP_URL} with Puppeteer`);
+    log.verbose(`Navigating to ${MEETUP_GROUP_URL}`);
     await page.goto(MEETUP_GROUP_URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
     // Wait a bit for dynamic content
@@ -123,7 +81,7 @@ async function scrapeEventsList() {
       return Array.from(urls);
     });
 
-    log.success(`Found ${eventUrls.length} events on Meetup with Puppeteer`);
+    log.success(`Found ${eventUrls.length} events on Meetup`);
     log.verbose('Event URLs: ' + eventUrls.join(', '));
 
     return eventUrls;
@@ -134,153 +92,12 @@ async function scrapeEventsList() {
 }
 
 /**
- * Scrape individual event page for details
- * First try with simple fetch, fallback to Puppeteer if needed
+ * Scrape individual event page for details using Puppeteer
  */
 async function scrapeEventDetails(eventUrl) {
   const eventId = extractEventId(eventUrl);
   log.verbose(`Scraping event ${eventId}: ${eventUrl}`);
 
-  // First try with simple fetch
-  try {
-    const response = await fetch(eventUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
-      }
-    });
-
-    const html = await response.text();
-    const $ = cheerio.load(html);
-
-    // Extract event data using Cheerio
-    const title = $('h1').first().text().trim() ||
-                  $('[data-testid="event-title"]').text().trim() ||
-                  $('meta[property="og:title"]').attr('content') || '';
-
-    // Look for date/time in various formats
-    let date = '';
-    let time = '4:00 PM - 5:30 PM HST'; // Default
-
-    // Try to find time element
-    const timeElement = $('time').first();
-    if (timeElement.length) {
-      const datetime = timeElement.attr('datetime');
-      if (datetime) {
-        const dateObj = new Date(datetime);
-        date = dateObj.toLocaleDateString('en-US', {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric'
-        });
-
-        // Look for time text near the time element
-        const timeContainer = timeElement.parent().text();
-        // Look for patterns like "4:00 PM to 5:30 PM" or "4:00 PM - 5:30 PM"
-        let timeMatch = timeContainer.match(/(\d{1,2}:\d{2}\s*(AM|PM))\s*(to|-|–)\s*(\d{1,2}:\d{2}\s*(AM|PM))/);
-        if (timeMatch) {
-          time = `${timeMatch[1]} - ${timeMatch[4]} HST`;
-        } else {
-          // Fallback to simpler pattern
-          timeMatch = timeContainer.match(/\d{1,2}:\d{2}\s*(AM|PM)/);
-          if (timeMatch) {
-            time = timeMatch[0] + ' HST';
-          }
-        }
-      }
-    }
-
-    // Get location
-    let location = 'VIRTUAL'; // Default
-    const addressElement = $('address').first();
-    if (addressElement.length) {
-      const addressText = addressElement.text().trim();
-      if (addressText && !addressText.toLowerCase().includes('online')) {
-        location = addressText.split('\n')[0].trim();
-      }
-    }
-
-    // Get description from meta tag or content
-    let description = $('meta[property="og:description"]').attr('content') ||
-                      $('meta[name="description"]').attr('content') || '';
-
-    // Try to find more detailed description in the page
-    const descSelectors = [
-      '[data-testid="event-description"]',
-      '[data-event-label="description"]',
-      '.event-description',
-      '[class*="description"]',
-      'div[class*="wysiwyg"]',
-      'div[class*="event-content"]',
-      'section[aria-labelledby*="details"]',
-      '#event-details-section',
-      'div[data-testid="rich-text-content"]',
-      'main section div[class*="break-words"]',
-      'div.w-full.break-words'
-    ];
-
-    for (const selector of descSelectors) {
-      const elem = $(selector).first();
-      if (elem.length) {
-        // Try to get paragraphs for better formatting
-        const paragraphs = elem.find('p');
-        let newDesc = '';
-        if (paragraphs.length > 0) {
-          newDesc = paragraphs.map((i, p) => $(p).text().trim()).get()
-            .filter(text => text.length > 0)
-            .join(' ')
-            .replace(/\s+/g, ' ')
-            .substring(0, 1000);
-        } else {
-          newDesc = elem.text().trim()
-            .replace(/\s+/g, ' ')
-            .substring(0, 1000);
-        }
-
-        if (newDesc.length > description.length && newDesc.length > 50) {
-          description = newDesc;
-        }
-      }
-    }
-
-    // Get image URL
-    let imageUrl = $('meta[property="og:image"]').attr('content') || '';
-    if (!imageUrl) {
-      const imgElement = $('img[src*="meetupstatic.com/photos/event"]').first();
-      if (imgElement.length) {
-        imageUrl = imgElement.attr('src') || '';
-      }
-    }
-    if (imageUrl && !imageUrl.includes('?w=')) {
-      imageUrl += '?w=750';
-    }
-
-    // If we got basic data, return it
-    if (title && date) {
-      const eventData = {
-        title,
-        date,
-        time,
-        location,
-        description: description || 'Join us for this exciting Big Island Tech event!',
-        imageUrl: imageUrl || 'https://secure.meetupstatic.com/photos/event/1/6/a/6/600_528965798.webp?w=750',
-        link: eventUrl,
-        meetupId: eventId,
-        dateISO: convertToISO(date)
-      };
-
-      log.verbose(`Scraped with fetch: ${eventData.title} on ${eventData.date}`);
-      log.verbose(`Description length: ${eventData.description.length} chars`);
-      return eventData;
-    }
-
-    log.verbose('Insufficient data from fetch, trying Puppeteer...');
-  } catch (error) {
-    log.verbose(`Fetch failed for ${eventUrl}: ${error.message}, trying Puppeteer...`);
-  }
-
-  // Fallback to Puppeteer for dynamic content
   const browser = await puppeteer.launch({
     headless: 'new',
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
@@ -301,7 +118,7 @@ async function scrapeEventDetails(eventUrl) {
     await new Promise(resolve => setTimeout(resolve, 3000));
 
     // Extract event data
-    const eventData = await page.evaluate(() => {
+    const eventData = await page.evaluate((timezone) => {
       // Helper to get text content safely
       const getText = (selector) => {
         const element = document.querySelector(selector);
@@ -320,25 +137,38 @@ async function scrapeEventDetails(eventUrl) {
         const datetime = timeElements[0].getAttribute('datetime');
         if (datetime) {
           const dateObj = new Date(datetime);
-          // Format date as "Month Day, Year"
+          // Format date as "Month Day, Year" in Hawaii timezone
           date = dateObj.toLocaleDateString('en-US', {
             month: 'long',
             day: 'numeric',
-            year: 'numeric'
+            year: 'numeric',
+            timeZone: timezone
           });
 
-          // Try to get time range from the page
+          // Format start time in Hawaii timezone
+          const startTime = dateObj.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+            timeZone: timezone
+          });
+
+          // Try to get end time from the page text
           const timeText = timeElements[0].parentElement?.textContent || '';
           // Look for patterns like "4:00 PM to 5:30 PM" or "4:00 PM - 5:30 PM"
-          let timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*(AM|PM))\s*(to|-|–)\s*(\d{1,2}:\d{2}\s*(AM|PM))/);
+          let timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*(AM|PM))\s*(to|-|–)\s*(\d{1,2}:\d{2}\s*(AM|PM))/i);
           if (timeMatch) {
-            time = `${timeMatch[1]} - ${timeMatch[4]} HST`;
+            time = `${startTime} - ${timeMatch[4]} HST`;
           } else {
-            // Fallback to simpler pattern
-            timeMatch = timeText.match(/\d{1,2}:\d{2}\s*(AM|PM)/);
-            if (timeMatch) {
-              time = timeMatch[0] + ' HST';
-            }
+            // Default to 1.5 hour event
+            const endDate = new Date(dateObj.getTime() + 90 * 60 * 1000);
+            const endTime = endDate.toLocaleTimeString('en-US', {
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true,
+              timeZone: timezone
+            });
+            time = `${startTime} - ${endTime} HST`;
           }
         }
       }
@@ -432,7 +262,7 @@ async function scrapeEventDetails(eventUrl) {
         description,
         imageUrl
       };
-    });
+    }, HAWAII_TIMEZONE);
 
     // Add additional fields
     eventData.link = eventUrl;
@@ -461,15 +291,23 @@ function extractEventId(url) {
 }
 
 /**
- * Convert date string to ISO format
+ * Convert date string to ISO format (YYYY-MM-DD)
+ * The date string is already in Hawaii timezone, so we parse it directly
  */
 function convertToISO(dateStr) {
   try {
+    // Parse the date string (e.g., "January 8, 2026")
     const date = new Date(dateStr);
     if (isNaN(date.getTime())) {
       return null;
     }
-    return date.toISOString().split('T')[0];
+    // Format as YYYY-MM-DD using the parsed date components
+    // Since the dateStr was formatted in Hawaii timezone, we use UTC methods
+    // to avoid double timezone conversion
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   } catch {
     return null;
   }

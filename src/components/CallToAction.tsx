@@ -8,8 +8,8 @@ const CallToAction = () => {
   return (
     <section id="join" className="py-16 bg-hawaii-blue">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div className="text-left">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="text-center lg:text-left flex flex-col justify-center items-center lg:items-start">
             <h2 className="text-3xl font-bold text-white sm:text-4xl">Ready to Join Our Community?</h2>
             <p className="mt-4 text-lg text-white/90">
               Become a part of the Big Island Tech community and connect with innovators, entrepreneurs, and tech enthusiasts.
@@ -23,7 +23,7 @@ const CallToAction = () => {
               </Button>
             </div>
           </div>
-          <div className="flex justify-center lg:justify-end">
+          <div className="flex justify-center lg:justify-end lg:items-center">
             <MailerLiteForm />
           </div>
         </div>

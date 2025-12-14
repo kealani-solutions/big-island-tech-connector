@@ -68,6 +68,20 @@ export const getPastEvents = (): Event[] => {
  */
 export const allEvents: Event[] = [
   {
+    id: 18,
+    title: "Big Island Tech Meetup",
+    date: "June 11, 2026",
+    dateISO: "2026-06-11",
+    time: "4:00 PM - 3:30 AM HST",
+    location: "VIRTUAL",
+    description: "The June meetup will be virtual only. RSVP to get the Google Meet link. Big Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems and make life better for everyone. Through engaging discussions, knowledge sharing, and networking, we aim to foster a vibrant ecosystem of creativity and innovation. Whether you’re a seasoned entrepreneur, a technology professional, a curious student, or just someone excited about the possibilities of innovation, this group is for you. If you love learning, sharing ideas, and contributing to a thriving community, we’d love to have you join us. Agenda: • 4:00 - 4:05 PM: Gather and chat while everyone arrives Share something interesting with the group. • 4:05 - 4:20 PM: News, Jobs, and Announcements Share or hear about the latest deve",
+    imageUrl: "https://secure.meetupstatic.com/photos/event/d/2/5/2/highres_531773842.webp?w=3840",
+    link: "https://www.meetup.com/big-island-tech/events/312423450/?eventOrigin=group_events_list",
+    meetupId: "312423450",
+    lastSyncedAt: "2025-12-14T18:09:48.309Z",
+    syncStatus: "synced",
+  },
+  {
     id: 17,
     title: "Big Island Tech Meetup",
     date: "May 14, 2026",

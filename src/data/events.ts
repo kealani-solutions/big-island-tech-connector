@@ -97,7 +97,7 @@ export const allEvents: Event[] = [
   },
   {
     id: 16,
-    title: "Big Island Tech Meetup",
+    title: "Big Island Tech Meetup - Alexander García-Tobar - Agentic Trust",
     date: "April 9, 2026",
     dateISO: "2026-04-09",
     time: "4:00 PM - 3:30 AM HST",
@@ -106,7 +106,7 @@ export const allEvents: Event[] = [
     imageUrl: "https://secure.meetupstatic.com/photos/event/d/6/c/b/highres_531714987.webp?w=3840",
     link: "https://www.meetup.com/big-island-tech/events/312372203/?eventOrigin=group_events_list",
     meetupId: "312372203",
-    lastSyncedAt: "2025-12-13T18:09:12.588Z",
+    lastSyncedAt: "2025-12-18T18:11:30.609Z",
     syncStatus: "synced",
   },
   {

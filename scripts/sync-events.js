@@ -153,23 +153,33 @@ async function scrapeEventDetails(eventUrl) {
             timeZone: timezone
           });
 
-          // Try to get end time from the page text
-          const timeText = timeElements[0].parentElement?.textContent || '';
-          // Look for patterns like "4:00 PM to 5:30 PM" or "4:00 PM - 5:30 PM"
-          let timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*(AM|PM))\s*(to|-|–)\s*(\d{1,2}:\d{2}\s*(AM|PM))/i);
-          if (timeMatch) {
-            time = `${startTime} - ${timeMatch[4]} HST`;
-          } else {
+          // Try to get end time from a second <time> element
+          let endTime = '';
+          if (timeElements.length > 1) {
+            const endDatetime = timeElements[1].getAttribute('datetime');
+            if (endDatetime) {
+              const endDateObj = new Date(endDatetime);
+              endTime = endDateObj.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true,
+                timeZone: timezone
+              });
+            }
+          }
+
+          if (!endTime) {
             // Default to 1.5 hour event
             const endDate = new Date(dateObj.getTime() + 90 * 60 * 1000);
-            const endTime = endDate.toLocaleTimeString('en-US', {
+            endTime = endDate.toLocaleTimeString('en-US', {
               hour: 'numeric',
               minute: '2-digit',
               hour12: true,
               timeZone: timezone
             });
-            time = `${startTime} - ${endTime} HST`;
           }
+
+          time = `${startTime} - ${endTime} HST`;
         }
       }
 

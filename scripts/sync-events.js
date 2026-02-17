@@ -43,6 +43,79 @@ const log = {
 };
 
 /**
+ * Validate a time string matches the expected format
+ * Expected: "HH:MM AM/PM - HH:MM AM/PM HST"
+ */
+function validateTimeString(time) {
+  if (!time || typeof time !== 'string') {
+    return { valid: false, reason: 'Time is empty or not a string' };
+  }
+  if (time.includes('Invalid Date')) {
+    return { valid: false, reason: 'Time contains "Invalid Date"' };
+  }
+  const pattern = /^\d{1,2}:\d{2}\s[AP]M\s-\s\d{1,2}:\d{2}\s[AP]M\sHST$/;
+  if (!pattern.test(time)) {
+    return { valid: false, reason: `Time "${time}" does not match expected format "H:MM AM - H:MM AM HST"` };
+  }
+  return { valid: true };
+}
+
+/**
+ * Validate a scraped event has all required fields and valid formats
+ */
+function validateEvent(event) {
+  const issues = [];
+
+  if (!event.title || event.title.trim().length === 0) {
+    issues.push('Missing title');
+  }
+  if (!event.date || event.date.trim().length === 0) {
+    issues.push('Missing date');
+  }
+  if (!event.link || !event.link.includes('meetup.com')) {
+    issues.push('Missing or invalid link');
+  }
+
+  const timeCheck = validateTimeString(event.time);
+  if (!timeCheck.valid) {
+    issues.push(`Invalid time: ${timeCheck.reason}`);
+  }
+
+  if (event.dateISO) {
+    const isoDate = new Date(event.dateISO);
+    if (isNaN(isoDate.getTime())) {
+      issues.push(`Invalid dateISO: "${event.dateISO}"`);
+    }
+  }
+
+  return { valid: issues.length === 0, issues };
+}
+
+/**
+ * Retry a function with exponential backoff
+ */
+async function retryWithBackoff(fn, { maxRetries = 3, label = 'operation' } = {}) {
+  const delays = [5000, 15000, 30000];
+  let lastError;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error;
+      if (attempt < maxRetries) {
+        const delay = delays[attempt] || 30000;
+        log.warning(`${label} failed (attempt ${attempt + 1}/${maxRetries + 1}): ${error.message}`);
+        log.info(`Retrying in ${delay / 1000}s...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+
+  throw lastError;
+}
+
+/**
  * Scrape the main events page to get list of upcoming events
  */
 async function scrapeEventsList() {
@@ -159,17 +232,20 @@ async function scrapeEventDetails(eventUrl) {
             const endDatetime = timeElements[1].getAttribute('datetime');
             if (endDatetime) {
               const endDateObj = new Date(endDatetime);
-              endTime = endDateObj.toLocaleTimeString('en-US', {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true,
-                timeZone: timezone
-              });
+              // Guard: only use if the date parsed successfully
+              if (!isNaN(endDateObj.getTime())) {
+                endTime = endDateObj.toLocaleTimeString('en-US', {
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true,
+                  timeZone: timezone
+                });
+              }
             }
           }
 
           if (!endTime) {
-            // Default to 1.5 hour event
+            // Default to 1.5 hour event if end time missing or invalid
             const endDate = new Date(dateObj.getTime() + 90 * 60 * 1000);
             endTime = endDate.toLocaleTimeString('en-US', {
               hour: 'numeric',
@@ -180,6 +256,11 @@ async function scrapeEventDetails(eventUrl) {
           }
 
           time = `${startTime} - ${endTime} HST`;
+
+          // Final guard: reject if "Invalid Date" leaked through
+          if (time.includes('Invalid Date')) {
+            time = '';
+          }
         }
       }
 
@@ -434,7 +515,10 @@ function mergeEvents(existingEvents, scrapedEvents) {
         FORCE_UPDATE;
 
       if (needsUpdate) {
-        // Update existing event
+        // Update existing event, but protect against overwriting good data with bad
+        const scrapedTimeValid = validateTimeString(scraped.time).valid;
+        const existingTimeValid = validateTimeString(existing.time).valid;
+
         const updated = {
           ...existing,
           ...scraped,
@@ -443,6 +527,13 @@ function mergeEvents(existingEvents, scrapedEvents) {
           syncStatus: 'synced',
           lastSyncedAt: new Date().toISOString()
         };
+
+        // If scraped time is invalid but existing is valid, keep existing
+        if (!scrapedTimeValid && existingTimeValid) {
+          updated.time = existing.time;
+          log.warning(`Kept existing time for "${existing.title}" (scraped time was invalid)`);
+        }
+
         changes.updated.push(updated);
       } else {
         changes.unchanged.push(existing);
@@ -514,6 +605,15 @@ function generateEventsCode(events) {
  */
 function saveEvents(events) {
   try {
+    // Last line of defense: validate every event before writing
+    const invalidEvents = events.filter(e => {
+      return e.time && e.time.includes('Invalid Date');
+    });
+    if (invalidEvents.length > 0) {
+      const names = invalidEvents.map(e => `"${e.title}" (ID ${e.id})`).join(', ');
+      throw new Error(`Refusing to write: ${invalidEvents.length} event(s) contain "Invalid Date": ${names}`);
+    }
+
     // Read the original file
     const content = fs.readFileSync(EVENTS_FILE, 'utf8');
 
@@ -564,8 +664,11 @@ async function syncEvents() {
   }
 
   try {
-    // Step 1: Scrape list of events
-    const eventUrls = await scrapeEventsList();
+    // Step 1: Scrape list of events (with retry for navigation timeouts)
+    const eventUrls = await retryWithBackoff(
+      () => scrapeEventsList(),
+      { maxRetries: 3, label: 'Scrape events list' }
+    );
 
     if (eventUrls.length === 0) {
       log.warning('No events found on Meetup');
@@ -577,16 +680,42 @@ async function syncEvents() {
     const scrapedEvents = [];
 
     for (const url of eventUrls) {
-      const eventData = await scrapeEventDetails(url);
+      const eventData = await retryWithBackoff(
+        () => scrapeEventDetails(url),
+        { maxRetries: 2, label: `Scrape ${extractEventId(url)}` }
+      );
       if (eventData) {
-        scrapedEvents.push(eventData);
+        // Post-scrape validation gate
+        const validation = validateEvent(eventData);
+        if (validation.valid) {
+          scrapedEvents.push(eventData);
+        } else {
+          log.warning(`Event "${eventData.title}" (${eventData.meetupId}) has issues: ${validation.issues.join(', ')}`);
+          // Attempt to fix invalid time with start+90min default
+          const timeCheck = validateTimeString(eventData.time);
+          if (!timeCheck.valid && eventData.dateISO) {
+            const fallbackDate = new Date(eventData.dateISO);
+            if (!isNaN(fallbackDate.getTime())) {
+              eventData.time = '4:00 PM - 5:30 PM HST';
+              log.info(`  -> Applied default time for "${eventData.title}"`);
+            }
+          }
+          // Re-validate after attempted fix
+          const recheck = validateEvent(eventData);
+          if (recheck.valid) {
+            scrapedEvents.push(eventData);
+            log.success(`  -> Event fixed and included`);
+          } else {
+            log.error(`  -> Skipping event: still invalid after fix attempt (${recheck.issues.join(', ')})`);
+          }
+        }
       }
 
       // Small delay to avoid rate limiting
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
-    log.success(`Successfully scraped ${scrapedEvents.length} events`);
+    log.success(`Successfully scraped ${scrapedEvents.length} valid events`);
 
     // Step 3: Load existing events
     const existingEvents = loadExistingEvents();

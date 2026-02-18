@@ -75,6 +75,9 @@ function validateEvent(event) {
   if (!event.link || !event.link.includes('meetup.com')) {
     issues.push('Missing or invalid link');
   }
+  if (!event.location || event.location.trim().length === 0) {
+    issues.push('Missing location');
+  }
 
   const timeCheck = validateTimeString(event.time);
   if (!timeCheck.valid) {
@@ -264,13 +267,37 @@ async function scrapeEventDetails(eventUrl) {
         }
       }
 
-      // Get location
+      // Get location from JSON-LD structured data
       let location = 'VIRTUAL'; // Default
-      const addressElements = document.querySelectorAll('address');
-      if (addressElements.length > 0) {
-        const addressText = addressElements[0].textContent.trim();
-        if (addressText && !addressText.toLowerCase().includes('online')) {
-          location = addressText.split('\n')[0].trim(); // Get first line
+      const jsonLdScripts = document.querySelectorAll('script[type="application/ld+json"]');
+      for (const script of jsonLdScripts) {
+        try {
+          const data = JSON.parse(script.textContent);
+          if (data['@type'] === 'Event') {
+            const mode = data.eventAttendanceMode || '';
+            if (mode.includes('OnlineEventAttendanceMode')) {
+              location = 'VIRTUAL';
+            } else if (data.location) {
+              if (data.location['@type'] === 'Place' && data.location.name) {
+                location = data.location.name;
+              } else if (data.location['@type'] === 'VirtualLocation') {
+                location = 'VIRTUAL';
+              }
+            }
+            break;
+          }
+        } catch (e) {
+          // Skip invalid JSON-LD blocks
+        }
+      }
+      // Fallback: try <address> elements if JSON-LD didn't yield a result
+      if (location === 'VIRTUAL') {
+        const addressElements = document.querySelectorAll('address');
+        if (addressElements.length > 0) {
+          const addressText = addressElements[0].textContent.trim();
+          if (addressText && !addressText.toLowerCase().includes('online')) {
+            location = addressText.split('\n')[0].trim();
+          }
         }
       }
 

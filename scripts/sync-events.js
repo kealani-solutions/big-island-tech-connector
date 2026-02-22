@@ -247,8 +247,10 @@ async function scrapeEventDetails(eventUrl) {
             }
           }
 
+          let endTimeIsFallback = false;
           if (!endTime) {
             // Default to 1.5 hour event if end time missing or invalid
+            endTimeIsFallback = true;
             const endDate = new Date(dateObj.getTime() + 90 * 60 * 1000);
             endTime = endDate.toLocaleTimeString('en-US', {
               hour: 'numeric',
@@ -376,6 +378,7 @@ async function scrapeEventDetails(eventUrl) {
         title,
         date,
         time: time || '4:00 PM - 5:30 PM HST', // Default time if not found
+        endTimeIsFallback: endTimeIsFallback || !time, // Flag if end time was derived from fallback
         location,
         description,
         imageUrl
@@ -528,6 +531,8 @@ function mergeEvents(existingEvents, scrapedEvents) {
         syncStatus: 'synced',
         lastSyncedAt: new Date().toISOString()
       };
+      // Don't persist the internal flag
+      delete newEvent.endTimeIsFallback;
       changes.added.push(newEvent);
 
     } else {
@@ -555,10 +560,19 @@ function mergeEvents(existingEvents, scrapedEvents) {
           lastSyncedAt: new Date().toISOString()
         };
 
+        // Don't persist the internal flag
+        delete updated.endTimeIsFallback;
+
         // If scraped time is invalid but existing is valid, keep existing
         if (!scrapedTimeValid && existingTimeValid) {
           updated.time = existing.time;
           log.warning(`Kept existing time for "${existing.title}" (scraped time was invalid)`);
+        }
+
+        // If scraped end time used the +90min fallback and existing has a valid time, keep existing
+        if (scraped.endTimeIsFallback && existingTimeValid) {
+          updated.time = existing.time;
+          log.warning(`Kept existing time for "${existing.title}" (scraped end time was a fallback estimate)`);
         }
 
         changes.updated.push(updated);

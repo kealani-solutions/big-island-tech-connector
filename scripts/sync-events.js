@@ -208,6 +208,7 @@ async function scrapeEventDetails(eventUrl) {
       const timeElements = document.querySelectorAll('time');
       let date = '';
       let time = '';
+      let endTimeIsFallback = false;
 
       if (timeElements.length > 0) {
         const datetime = timeElements[0].getAttribute('datetime');
@@ -247,7 +248,6 @@ async function scrapeEventDetails(eventUrl) {
             }
           }
 
-          let endTimeIsFallback = false;
           if (!endTime) {
             // Default to 1.5 hour event if end time missing or invalid
             endTimeIsFallback = true;

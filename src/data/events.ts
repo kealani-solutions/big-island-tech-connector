@@ -102,11 +102,11 @@ export const allEvents: Event[] = [
     dateISO: "2026-04-16",
     time: "4:00 PM - 5:30 PM HST",
     location: "VIRTUAL",
-    description: "Due to conflict with the East Meets West conference we are rescheduling this month's meeting to Thursday April 16. See you at East Meets West This month we are honored to have Alexander García-Tobar, Co-founder & CEO, Valimail (a DigiCert Company) share his insights about Agentic Trust. Who's Knocking? The AI Agent Identity Crisis AI agents are taking over workflows — browsing the web, sending emails, calling APIs, making decisions on your behalf — but here's the problem nobody is talking about loudly enough: how do you know if the agent acting in your systems is actually who it claims to be? Alexander García-Tobar co-founded Valimail in 2015 to solve exactly this kind of trust problem for email, building the company and 20+ patents around automated, zero-trust authentication that attacks phishing at the root: sender impersonation. Valimail became the DMARC market leader, grew to 92,000 clients worldwide, and was acquired by DigiCert in September 2025. The parallel to AI agents is dire",
+    description: "This month we are honored to have Alexander García-Tobar, Co-founder & CEO, Valimail (a DigiCert Company) share his insights about Agentic Trust. Who's Knocking? The AI Agent Identity Crisis AI agents are taking over workflows — browsing the web, sending emails, calling APIs, making decisions on your behalf — but here's the problem nobody is talking about loudly enough: how do you know if the agent acting in your systems is actually who it claims to be? Alexander García-Tobar co-founded Valimail in 2015 to solve exactly this kind of trust problem for email, building the company and 20+ patents around automated, zero-trust authentication that attacks phishing at the root: sender impersonation. Valimail became the DMARC market leader, grew to 92,000 clients worldwide, and was acquired by DigiCert in September 2025. The parallel to AI agents is direct. Email had no built-in authentication for decades — anyone could claim to be your bank or your CEO — and DMARC fixed that with a cryptograp",
     imageUrl: "https://secure.meetupstatic.com/photos/event/d/6/c/b/highres_531714987.webp?w=3840",
     link: "https://www.meetup.com/big-island-tech/events/312372203/?eventOrigin=group_events_list",
     meetupId: "312372203",
-    lastSyncedAt: "2026-04-14T19:20:54.416Z",
+    lastSyncedAt: "2026-04-15T19:22:18.861Z",
     syncStatus: "synced",
   },
   {

@@ -139,7 +139,7 @@ export const allEvents: Event[] = [
   },
   {
     id: 18,
-    title: "Michelle Dumais - The Hard Part Isn",
+    title: "Michelle Dumais - The Hard Part Isn't the AI",
     date: "June 11, 2026",
     dateISO: "2026-06-11",
     time: "4:00 PM - 5:30 PM HST",
@@ -148,7 +148,7 @@ export const allEvents: Event[] = [
     imageUrl: "https://secure.meetupstatic.com/photos/event/d/2/5/2/highres_531773842.webp?w=3840",
     link: "https://www.meetup.com/big-island-tech/events/312423450/?eventOrigin=group_events_list",
     meetupId: "312423450",
-    lastSyncedAt: "2026-06-11T20:25:23.593Z",
+    lastSyncedAt: "2026-08-05T19:39:06.226Z",
     syncStatus: "synced",
   },
   {

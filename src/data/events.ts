@@ -148,7 +148,7 @@ export const allEvents: Event[] = [
     imageUrl: "https://secure.meetupstatic.com/photos/event/d/2/5/2/highres_531773842.webp?w=3840",
     link: "https://www.meetup.com/big-island-tech/events/312423450/?eventOrigin=group_events_list",
     meetupId: "312423450",
-    lastSyncedAt: "2026-08-07T19:01:17.965Z",
+    lastSyncedAt: "2026-08-08T18:41:27.490Z",
     syncStatus: "synced",
   },
   {

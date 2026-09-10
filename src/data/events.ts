@@ -21,18 +21,33 @@ export const extractMeetupId = (url: string): string | null => {
 };
 
 // Utility function to parse date and determine if event is past
-export const isEventPast = (event: Event): boolean => {
+// All meetups happen in Hawaii, so "today" is always judged in Hawaii time.
+const EVENT_TIME_ZONE = 'Pacific/Honolulu';
+
+// Calendar date (YYYY-MM-DD) of the given instant as observed in Hawaii.
+const toHawaiiDateString = (date: Date): string =>
+  date.toLocaleDateString('en-CA', { timeZone: EVENT_TIME_ZONE });
+
+// Calendar date (YYYY-MM-DD) of the event. Prefer dateISO; fall back to the
+// human-readable date, which parses as local midnight, so read its local parts.
+const getEventDateString = (event: Event): string => {
+  if (event.dateISO) return event.dateISO;
+  const d = new Date(event.date);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+};
+
+export const isEventPast = (event: Event, now: Date = new Date()): boolean => {
   // If manually set as cancelled, treat as past
   if (event.status === 'cancelled') return true;
   if (event.status === 'upcoming') return false;
   if (event.status === 'past') return true;
 
-  // Try to parse the dateISO first, then fall back to date string
-  const eventDate = event.dateISO ? new Date(event.dateISO) : new Date(event.date);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Start of today
-  
-  return eventDate < today;
+  // An event stays "upcoming" through the end of its day in Hawaii and becomes
+  // past the next day, regardless of the visitor's timezone. Dates are compared
+  // as YYYY-MM-DD strings on purpose: new Date("YYYY-MM-DD") is UTC midnight,
+  // which is the previous afternoon in Hawaii and made events go past a day early.
+  return getEventDateString(event) < toHawaiiDateString(now);
 };
 
 // Utility function to get upcoming events

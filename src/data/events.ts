@@ -256,7 +256,7 @@ export const allEvents: Event[] = [
     dateISO: "2025-10-09",
     time: "4:00 PM - 5:30 PM HST",
     location: "VIRTUAL",
-    description: "The October meetup will be virtual only. RSVP to get the Google Meet link. This month we have a new member of the group giving a talk that I think many people will be interested in. Enhancing Go HighLevel with Gamma & n8n Automation - Presented by Joshua Rodriguez Joshua Rodriguez says \",
+    description: "The October meetup will be virtual only. RSVP to get the Google Meet link. This month we have a new member of the group giving a talk that I think many people will be interested in. Enhancing Go HighLevel with Gamma & n8n Automation - Presented by Joshua Rodriguez Joshua Rodriguez says \"We use Gamma and n8n with Go HighLevel to save time and do better work. Gamma helps us make nice-looking reports and slides fast. n8n connects our apps and does boring tasks for us. This helps us focus more on helping our clients grow.\" Joshua is the cofounder of Webcare Digital - providing marketing solutions for Home Service business owners in Hawaii. Who should attend? (Marketing Managers, Business Owners, Educators). Big Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems ",
     imageUrl: "https://secure.meetupstatic.com/photos/event/1/6/a/6/highres_528965798.webp?w=3840",
     link: "https://www.meetup.com/big-island-tech/events/308987165/?eventOrigin=group_events_list",
     meetupId: "308987165",

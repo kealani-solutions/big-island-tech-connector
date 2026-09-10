@@ -440,7 +440,33 @@ function convertToISO(dateStr) {
 function loadExistingEvents() {
   try {
     const content = fs.readFileSync(EVENTS_FILE, 'utf8');
+    const events = parseEventsContent(content);
 
+    log.success(`Loaded ${events.length} existing events`);
+    return events;
+
+  } catch (error) {
+    log.error(`Failed to load existing events: ${error.message}`);
+    return [];
+  }
+}
+
+/**
+ * Decode a JS string literal (with surrounding quotes) back to its value.
+ * Double-quoted literals are written with JSON.stringify, so JSON.parse
+ * reverses them exactly; single-quoted ones only ever hold status values.
+ */
+function decodeStringLiteral(literal) {
+  if (literal.startsWith('"')) {
+    return JSON.parse(literal);
+  }
+  return literal.slice(1, -1).replace(/\\(.)/g, '$1');
+}
+
+/**
+ * Parse the allEvents array out of the events.ts source text
+ */
+function parseEventsContent(content) {
     // Extract the allEvents array
     const match = content.match(/export const allEvents:\s*Event\[\]\s*=\s*(\[[\s\S]*?\]);/);
     if (!match) {
@@ -458,13 +484,16 @@ function loadExistingEvents() {
     for (const eventMatch of eventMatches) {
       const eventStr = eventMatch[0];
 
-      // Extract fields using regex
+      // Extract fields using regex. String values are matched as complete
+      // quoted literals (backslash escapes included) so quotes, apostrophes
+      // and backslashes inside a value never cut it short.
       const extractField = (field, isString = true) => {
         const pattern = isString
-          ? new RegExp(`${field}:\\s*["']([^"']*?)["']`)
+          ? new RegExp(`${field}:\\s*("(?:[^"\\\\]|\\\\.)*"|'(?:[^'\\\\]|\\\\.)*')`)
           : new RegExp(`${field}:\\s*(\\d+)`);
         const match = eventStr.match(pattern);
-        return match ? match[1] : null;
+        if (!match) return null;
+        return isString ? decodeStringLiteral(match[1]) : match[1];
       };
 
       const event = {
@@ -489,13 +518,7 @@ function loadExistingEvents() {
       }
     }
 
-    log.success(`Loaded ${events.length} existing events`);
     return events;
-
-  } catch (error) {
-    log.error(`Failed to load existing events: ${error.message}`);
-    return [];
-  }
 }
 
 /**
@@ -613,27 +636,30 @@ function generateEventsCode(events) {
   for (const event of sorted) {
     code += '  {\n';
     code += `    id: ${event.id},\n`;
-    code += `    title: "${event.title.replace(/"/g, '\\"')}",\n`;
-    code += `    date: "${event.date}",\n`;
+    // JSON.stringify produces a valid double-quoted JS literal for any text
+    // (quotes, backslashes and newlines escaped), and parseEventsContent
+    // decodes it with JSON.parse, so a write/read cycle is lossless.
+    code += `    title: ${JSON.stringify(event.title)},\n`;
+    code += `    date: ${JSON.stringify(event.date)},\n`;
     if (event.dateISO) {
-      code += `    dateISO: "${event.dateISO}",\n`;
+      code += `    dateISO: ${JSON.stringify(event.dateISO)},\n`;
     }
-    code += `    time: "${event.time}",\n`;
-    code += `    location: "${event.location}",\n`;
-    code += `    description: "${event.description.replace(/"/g, '\\"').replace(/\n/g, '\\n')}",\n`;
-    code += `    imageUrl: "${event.imageUrl}",\n`;
-    code += `    link: "${event.link}",\n`;
+    code += `    time: ${JSON.stringify(event.time)},\n`;
+    code += `    location: ${JSON.stringify(event.location)},\n`;
+    code += `    description: ${JSON.stringify(event.description)},\n`;
+    code += `    imageUrl: ${JSON.stringify(event.imageUrl)},\n`;
+    code += `    link: ${JSON.stringify(event.link)},\n`;
     if (event.status) {
       code += `    status: '${event.status}',\n`;
     }
     if (event.meetupId) {
-      code += `    meetupId: "${event.meetupId}",\n`;
+      code += `    meetupId: ${JSON.stringify(event.meetupId)},\n`;
     }
     if (event.lastSyncedAt) {
-      code += `    lastSyncedAt: "${event.lastSyncedAt}",\n`;
+      code += `    lastSyncedAt: ${JSON.stringify(event.lastSyncedAt)},\n`;
     }
     if (event.syncStatus) {
-      code += `    syncStatus: "${event.syncStatus}",\n`;
+      code += `    syncStatus: ${JSON.stringify(event.syncStatus)},\n`;
     }
     code += '  },\n';
   }
@@ -810,4 +836,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   syncEvents().catch(console.error);
 }
 
-export { syncEvents, scrapeEventsList, scrapeEventDetails, mergeEvents };
+export { syncEvents, scrapeEventsList, scrapeEventDetails, mergeEvents, parseEventsContent, generateEventsCode };

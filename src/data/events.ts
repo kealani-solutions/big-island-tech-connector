@@ -21,18 +21,33 @@ export const extractMeetupId = (url: string): string | null => {
 };
 
 // Utility function to parse date and determine if event is past
-export const isEventPast = (event: Event): boolean => {
+// All meetups happen in Hawaii, so "today" is always judged in Hawaii time.
+const EVENT_TIME_ZONE = 'Pacific/Honolulu';
+
+// Calendar date (YYYY-MM-DD) of the given instant as observed in Hawaii.
+const toHawaiiDateString = (date: Date): string =>
+  date.toLocaleDateString('en-CA', { timeZone: EVENT_TIME_ZONE });
+
+// Calendar date (YYYY-MM-DD) of the event. Prefer dateISO; fall back to the
+// human-readable date, which parses as local midnight, so read its local parts.
+const getEventDateString = (event: Event): string => {
+  if (event.dateISO) return event.dateISO;
+  const d = new Date(event.date);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+};
+
+export const isEventPast = (event: Event, now: Date = new Date()): boolean => {
   // If manually set as cancelled, treat as past
   if (event.status === 'cancelled') return true;
   if (event.status === 'upcoming') return false;
   if (event.status === 'past') return true;
 
-  // Try to parse the dateISO first, then fall back to date string
-  const eventDate = event.dateISO ? new Date(event.dateISO) : new Date(event.date);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Start of today
-  
-  return eventDate < today;
+  // An event stays "upcoming" through the end of its day in Hawaii and becomes
+  // past the next day, regardless of the visitor's timezone. Dates are compared
+  // as YYYY-MM-DD strings on purpose: new Date("YYYY-MM-DD") is UTC midnight,
+  // which is the previous afternoon in Hawaii and made events go past a day early.
+  return getEventDateString(event) < toHawaiiDateString(now);
 };
 
 // Utility function to get upcoming events
@@ -256,7 +271,7 @@ export const allEvents: Event[] = [
     dateISO: "2025-10-09",
     time: "4:00 PM - 5:30 PM HST",
     location: "VIRTUAL",
-    description: "The October meetup will be virtual only. RSVP to get the Google Meet link. This month we have a new member of the group giving a talk that I think many people will be interested in. Enhancing Go HighLevel with Gamma & n8n Automation - Presented by Joshua Rodriguez Joshua Rodriguez says \",
+    description: "The October meetup will be virtual only. RSVP to get the Google Meet link. This month we have a new member of the group giving a talk that I think many people will be interested in. Enhancing Go HighLevel with Gamma & n8n Automation - Presented by Joshua Rodriguez Joshua Rodriguez says \"We use Gamma and n8n with Go HighLevel to save time and do better work. Gamma helps us make nice-looking reports and slides fast. n8n connects our apps and does boring tasks for us. This helps us focus more on helping our clients grow.\" Joshua is the cofounder of Webcare Digital - providing marketing solutions for Home Service business owners in Hawaii. Who should attend? (Marketing Managers, Business Owners, Educators). Big Island Tech Meetup is a community for innovators, entrepreneurs, and technology enthusiasts on the Big Island (and beyond) to connect, collaborate, and learn. We focus on exploring how technology—ranging from renewable energy to artificial intelligence—can solve real-world problems ",
     imageUrl: "https://secure.meetupstatic.com/photos/event/1/6/a/6/highres_528965798.webp?w=3840",
     link: "https://www.meetup.com/big-island-tech/events/308987165/?eventOrigin=group_events_list",
     meetupId: "308987165",
